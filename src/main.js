@@ -32,8 +32,8 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply('User info.');
 	} else if (commandName === 'play') {
 		 //If you are not in the voice channel, then return a message
-		if (!message.member.voice.channel) return message.channel.send("Please connect to a voice channel :c !");
-		message.member.voice.channel.join();
+		//if (!message.member.voice.channel) return message.channel.send("Please connect to a voice channel :c !");
+		//message.member.voice.channel.join();
 	}
 });
 
