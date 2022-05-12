@@ -45,10 +45,11 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply('User info.');
 	} else if (commandName === 'play') {
 		playAudio(interaction);
+		await interaction.reply('Song Playing: ');
 	} else if (commandName === 'stop'){
 		stop(interaction);
+		await interaction.reply(`I\'m sad :c `);
 	}
-
 });
 
 function stop(interaction){
