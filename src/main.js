@@ -1,9 +1,14 @@
-import {Client, Intents} from "discord.js"
-import dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import {
+	Client,
+	Intents
+} from "discord.js"
+import dotenv from 'dotenv'
 dotenv.config()
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({
+	intents: [Intents.FLAGS.GUILDS]
+});
 
 const token = process.env.token
 
@@ -15,7 +20,9 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
-	const { commandName } = interaction;
+	const {
+		commandName
+	} = interaction;
 
 	if (commandName === 'ping') {
 		await interaction.reply('Pong!');
@@ -23,6 +30,10 @@ client.on('interactionCreate', async interaction => {
 		await interaction.reply('Server info.');
 	} else if (commandName === 'user') {
 		await interaction.reply('User info.');
+	} else if (commandName === 'play') {
+		 //If you are not in the voice channel, then return a message
+		if (!message.member.voice.channel) return message.channel.send("Please connect to a voice channel :c !");
+		message.member.voice.channel.join();
 	}
 });
 
