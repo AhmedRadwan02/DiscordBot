@@ -37,19 +37,23 @@ client.on('interactionCreate', async interaction => {
 		commandName
 	} = interaction;
 	// Commands
-	if (commandName === 'ping') {
-		await interaction.reply('Pong!');
-	} else if (commandName === 'server') {
-		await interaction.reply('Server info.');
-	} else if (commandName === 'user') {
-		await interaction.reply('User info.');
-	} else if (commandName === 'play') {
-		playAudio(interaction);
-		await interaction.reply('Song Playing: ');
-	} else if (commandName === 'stop'){
-		stop(interaction);
-		await interaction.reply(`I\'m sad :c `);
-	}
+        switch (commandName) {
+            case "ping":
+                await interaction.reply("Pong!");
+                break;
+            case "server":
+                await interaction.reply("Server info.");
+                break;
+            case "user":
+                await interaction.reply("User info.");
+                break;
+            case "play":
+                await interaction.reply("Song Playing: ");
+                break;
+            case "stop":
+                await interaction.reply(`I\'m sad :c `);
+                break;
+        }
 });
 
 function stop(interaction){
