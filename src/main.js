@@ -49,9 +49,11 @@ client.on('interactionCreate', async interaction => {
                 break;
             case "play":
                 await interaction.reply("Song Playing: ");
+				playAudio(interaction);
                 break;
             case "stop":
                 await interaction.reply(`I\'m sad :c `);
+				stop(interaction);
                 break;
         }
 });
