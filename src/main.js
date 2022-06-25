@@ -71,7 +71,6 @@ function stop(interaction){
 	const voiceChannel = interaction.member.voice.channel;
 
 	if (voiceChannel) {
-		player.stop;
 		const connection = getVoiceConnection(voiceChannel.guild.id)
 		connection.destroy()
 	}
