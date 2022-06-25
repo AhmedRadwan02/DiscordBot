@@ -10,7 +10,11 @@ import {
 	joinVoiceChannel,
 	VoiceConnectionStatus,
 	entersState,
-	getVoiceConnection
+	getVoiceConnection,
+	createAudioPlayer,
+	createAudioResource,
+	StreamType,
+	AudioPlayerStatus
 } from '@discordjs/voice'
 
 // dotenv connection
@@ -29,6 +33,11 @@ const token = process.env.token
 client.once('ready', () => {
 	console.log('Ready!');
 });
+
+/**
+ * Create the audio player. We will use this for all of our connections.
+ */
+ const player = createAudioPlayer();
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -62,6 +71,7 @@ function stop(interaction){
 	const voiceChannel = interaction.member.voice.channel;
 
 	if (voiceChannel) {
+		player.stop;
 		const connection = getVoiceConnection(voiceChannel.guild.id)
 		connection.destroy()
 	}
@@ -81,6 +91,14 @@ const playAudio = (interaction) => {
 			channelId: voiceChannel.id,
 			guildId: voiceChannel.guild.id,
 			adapterCreator: voiceChannel.guild.voiceAdapterCreator,
+		});
+
+		const resource = createAudioResource('https://file-examples.com/storage/fe2b8f87f462b62be9b9b8a/2017/11/file_example_MP3_1MG.mp3');
+
+		player.play(resource);
+		player.on('error', error => {
+			console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
+			player.play(getNextResource());
 		});
 
 		// handle disconnecting?
