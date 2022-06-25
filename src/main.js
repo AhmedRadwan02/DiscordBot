@@ -17,6 +17,7 @@ import {
 	AudioPlayerStatus
 } from '@discordjs/voice'
 
+import ytdl from 'ytdl-core-discord';
 // dotenv connection
 dotenv.config()
 
@@ -34,10 +35,8 @@ client.once('ready', () => {
 	console.log('Ready!');
 });
 
-/**
- * Create the audio player. We will use this for all of our connections.
- */
- const player = createAudioPlayer();
+// Create Audio Player
+const player = createAudioPlayer();
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -76,7 +75,7 @@ function stop(interaction){
 	}
 
 }
-const playAudio = (interaction) => {
+const playAudio = async(interaction) => {
 	// declare vc
 	const voiceChannel = interaction.member.voice.channel;
 	if (voiceChannel) {
@@ -86,19 +85,24 @@ const playAudio = (interaction) => {
 				"I need the permissions to join and speak in your voice channel!"
 			);
 		}
+		// Create resource
+		const resource = createAudioResource(await ytdl('https://www.youtube.com/watch?v=UxO4Qhlq_g0&t=50s'));
+		// Play Audio
+		player.play(resource,{ inlineVolume: true });
+		// Catch Error 
+		player.on('error', error => {
+			console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
+			player.play(getNextResource());
+		});
+
 		const connection = joinVoiceChannel({
 			channelId: voiceChannel.id,
 			guildId: voiceChannel.guild.id,
 			adapterCreator: voiceChannel.guild.voiceAdapterCreator,
 		});
 
-		const resource = createAudioResource('https://file-examples.com/storage/fe2b8f87f462b62be9b9b8a/2017/11/file_example_MP3_1MG.mp3');
-
-		player.play(resource);
-		player.on('error', error => {
-			console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
-			player.play(getNextResource());
-		});
+		// subscribe
+		const subscription = connection.subscribe(player);
 
 		// handle disconnecting?
 		connection.on(VoiceConnectionStatus.Disconnected, async (oldState, newState) => {
