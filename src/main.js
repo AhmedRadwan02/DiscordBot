@@ -56,8 +56,10 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply("User info.");
                 break;
             case "play":
-                await interaction.reply("Song Playing: ");
-				playAudio(interaction);
+				const stringIn = interaction.options.getString('input');
+				const ytID = youtube_parser(stringIn);
+				await interaction.reply('Enjoi :)!');
+				playAudio(interaction,stringIn);
                 break;
             case "stop":
                 await interaction.reply(`I\'m sad :c `);
@@ -75,7 +77,7 @@ function stop(interaction){
 	}
 
 }
-const playAudio = async(interaction) => {
+const playAudio = async(interaction, url) => {
 	// declare vc
 	const voiceChannel = interaction.member.voice.channel;
 	if (voiceChannel) {
@@ -86,7 +88,7 @@ const playAudio = async(interaction) => {
 			);
 		}
 		// Create resource
-		const resource = createAudioResource(await ytdl('https://www.youtube.com/watch?v=UxO4Qhlq_g0&t=50s'));
+		const resource = createAudioResource(await ytdl(url));
 		// Play Audio
 		player.play(resource,{ inlineVolume: true });
 		// Catch Error 
@@ -123,6 +125,13 @@ const playAudio = async(interaction) => {
 	else {
 		return interaction.channel.send("You need to be in a voice channel to play music!");
 	}
+}
+
+// Get youtube video ID
+function youtube_parser(url){
+	var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+	   var match = url.match(regExp);
+	return (match&&match[7].length==11)? match[7] : false;
 }
 // Login to Discord with your client's token
 client.login(token);

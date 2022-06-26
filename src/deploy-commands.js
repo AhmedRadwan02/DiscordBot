@@ -13,7 +13,8 @@ const commands = [
 	new SlashCommandBuilder().setName('ping').setDescription('Replies with pong!'),
 	new SlashCommandBuilder().setName('server').setDescription('Replies with server info!'),
 	new SlashCommandBuilder().setName('user').setDescription('Replies with user info!'),
-	new SlashCommandBuilder().setName('play').setDescription('Play Youtube video'),
+	new SlashCommandBuilder().setName('play').setDescription('Play a song!').addStringOption(option => 
+		option.setName('input').setDescription('Song link c:').setRequired(true)),
 	new SlashCommandBuilder().setName('stop').setDescription('Stop the bot')
 ]
 	.map(command => command.toJSON());
