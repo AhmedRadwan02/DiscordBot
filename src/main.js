@@ -58,7 +58,7 @@ client.on('interactionCreate', async interaction => {
             case "play":
 				const stringIn = interaction.options.getString('input');
 				const ytID = youtube_parser(stringIn);
-				await interaction.reply('Enjoi :)!');
+				await interaction.reply('Enjoi!');
 				playAudio(interaction,stringIn);
                 break;
             case "stop":
@@ -68,6 +68,7 @@ client.on('interactionCreate', async interaction => {
         }
 });
 
+//	Stop commaned
 function stop(interaction){
 	const voiceChannel = interaction.member.voice.channel;
 
@@ -77,6 +78,7 @@ function stop(interaction){
 	}
 
 }
+
 const playAudio = async(interaction, url) => {
 	// declare vc
 	const voiceChannel = interaction.member.voice.channel;
