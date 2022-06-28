@@ -89,6 +89,7 @@ const playAudio = async(interaction, url) => {
 		}
 		// Create resource
 		const resource = createAudioResource(await ytdl(url));
+		
 		// Play Audio
 		player.play(resource,{ inlineVolume: true });
 		// Catch Error 
